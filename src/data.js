@@ -1,4 +1,4 @@
-export default data = [
+export default  [
     {
         title: 'The Rise of The Shield Hero', 
         poster: 'https://flxt.tmsimg.com/assets/p16918973_b_v9_aa.jpg', 

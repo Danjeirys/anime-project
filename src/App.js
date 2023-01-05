@@ -1,64 +1,38 @@
 import { useState, useEffect } from 'react'
 import './App.css';
-import MovieDisplay from './components/MovieDisplay';
-import Form from './components/Form';
-import NewOrderPage from './pages/newOrderPage';
-import AuthPage from './pages/AuthPage';
-import OrderHistoryPage from './pages/OrderHistoryPage';
-import NavBar from './components/NavBar';
 import { Routes, Route } from 'react-router-dom'
-import { getUser } from './utilities/users-service';
 import Movie from './pages/Movie';
+import LoginButton from './components/LoginButton';
+import LogoutButton from './components/LogoutButton';
+import Profile from './components/Profile';
+import { useAuth0 } from '@auth0/auth0-react'
+
 
 function App() {
-  const [movie, setMovie, user, setUser] = useState(null, getUser())
-  // const [user, setUser] = useState(getUser())
+  const [ user, setUser ] = useState(null)
 
-  // const apiKey = 'b474ca3b'
+  const { isLoading } = useAuth0()
 
-  // //fucntion to getMovies
-  // const getMovie = async (searchTerm) => {
-  //   //make fetch request and store response
-  //   try {
-  //   const response = await fetch(
-  //     `http://www.omdbapi.com/?apikey=${apiKey}&t=${searchTerm}`
-  //   )
-  //     //parse JSON response into js object
-  //   const data = await response.json()
-
-  //   //set the Movie state to the movie
-  //   setMovie(data)
-  //   } catch (err) {
-  //     console.log (err)
-  //   }
-  // }
-
-  // useEffect (() => {
-  //   getMovie('Clueless')
-  // }, [])
+  if (isLoading) return <div>Loading....</div>
 
   return (
-    // <div className="App">
-    //   <Form getMovie={getMovie}/>
-    //   <MovieDisplay movie={movie}/>
 
       <main className="App">
 
       {
         user ? 
         <>
-          <NavBar name={user.name} setUser={setUser} />
           <Routes>
-            <Route path="/orders/new" element={<NewOrderPage />} />
-            <Route path="/orders" element={<OrderHistoryPage />} />
+            {/* <Route path='login' element={<LoginButton />} /> */}
+            <Route path='logout' element={<LogoutButton />} />
+            <Route path='profile' element={<Profile />} />
             <Route path='/movies' element={<Movie />} />
           </Routes>
         </>
         : 
-          <AuthPage setUser={setUser} />
+          <LoginButton setUser={setUser}/>
       }
     </main>
-    // </div>
   );
 }
 

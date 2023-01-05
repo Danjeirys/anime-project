@@ -5,8 +5,17 @@ const logger = require('morgan');
 const { createRequire } = require('module');
 // Always require and configure near the top
 require('dotenv').config()
+const mongoose = require('mongoose')
 
-require("./config/database");
+mongoose.connect(process.env.DATABASE_URL)
+
+mongoose.connection
+  .on('open', () => console.log('connected to mongo'))
+  .on('close', () => console.log('disconnected'))
+  .on('error', (err) => console.log(err))
+
+
+// require("./config/database");
 
 const app = express();
 
@@ -17,7 +26,7 @@ app.use(express.json());
 // to serve from the production 'build' folder
 app.use(favicon(path.join(__dirname, "build", "favicon.ico")))
 app.use(express.static(path.join(__dirname, "build")))
-app.use(require('./config/checkToken'))
+// app.use(require('./config/checkToken'))
 
 // Put API routes here, before the "catch all" route
 app.use('/api/users', require("./routes/api/users"))
